@@ -34,7 +34,7 @@ def clean_dir(directory_path):
                 shutil.rmtree(file_path)  # Remove directory and all its contents
         except Exception as e:
             print(f"Failed to delete {file_path}. Reason: {e}")
-            return jsonify({"error": f"Failed to delete files.","reson":f"{e}"}), 400
+            return jsonify({"s":0,"error": f"Failed to delete files.","reson":f"{e}"}), 400
 
     print(f"Directory {directory_path} cleaned successfully.")
 
@@ -42,8 +42,8 @@ def clean_dir(directory_path):
 def cldir():
     cl=clean_dir(DOWNLOAD_DIR)
     if cl:
-        return cl, 400
-    return "Directory cleaned successfully.", 200
+        return jsonify({"s":0,"error": "err on clean"}), 400
+    return return jsonify({"s":1,"error": "Directory cleaned successfully."}), 200
 
 @app.route('/', methods=['GET'])
 def hellow():
@@ -54,7 +54,7 @@ def hellow():
 def download_video():
     url = request.args.get('url')
     if not url:
-        return jsonify({"error": "URL parameter is required"}), 400
+        return jsonify({"s":0,"error": "URL parameter is required"}), 400
 
     filename = os.path.basename(url)
     if "?" in filename:
@@ -87,6 +87,7 @@ def download_video():
         progress[filename] = "Completed"
 
         return jsonify({
+            "s":1,
             "status": "Completed",
             "filename": f"optimized_{filename}",
             "download_url": download_url,
@@ -94,14 +95,14 @@ def download_video():
         })
     except Exception as e:
         progress[filename] = "Error"
-        return jsonify({"error": str(e)}), 500
+        return jsonify({"s":0,"error": str(e)}), 500
 
 @app.route('/progress', methods=['GET'])
 def get_progress():
     filename = request.args.get('filename')
     if not filename:
-        return jsonify({"error": "Filename parameter is required"}), 400
-    return jsonify({"progress": progress.get(filename, "Not found")})
+        return jsonify({"s":0,"error": "Filename parameter is required"}), 400
+    return jsonify({"s":0,"progress": progress.get(filename, "Not found")})
 
 @app.route('/download/<path:filename>', methods=['GET'])
 def serve_file(filename):
