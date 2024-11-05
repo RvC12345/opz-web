@@ -104,7 +104,7 @@ def get_progress():
     filename = request.args.get('filename')
     if not filename:
         return jsonify({"s":0,"error": "Filename parameter is required"}), 400
-    return jsonify({"s":0,"progress": progress.get(filename, "Not found")})
+    return jsonify({"s":1,"progress": progress.get(filename, "Not found")})
 
 @app.route('/download/<path:filename>', methods=['GET'])
 def serve_file(filename):
