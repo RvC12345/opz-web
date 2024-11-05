@@ -43,7 +43,7 @@ def cldir():
     cl=clean_dir(DOWNLOAD_DIR)
     if cl:
         return jsonify({"s":0,"error": "err on clean"}), 400
-    return return jsonify({"s":1,"error": "Directory cleaned successfully."}), 200
+    return jsonify({"s":1,"error": "Directory cleaned successfully."}), 200
 
 @app.route('/', methods=['GET'])
 def hellow():
