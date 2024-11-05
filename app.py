@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify, send_from_directory
+from flask_cors import CORS
 import os,re
 import requests
 from moviepy.editor import VideoFileClip
@@ -12,6 +13,7 @@ app = Flask(__name__)
 DOWNLOAD_DIR = 'dl'
 os.makedirs(DOWNLOAD_DIR, exist_ok=True)
 
+CORS(app)
 # To store download progress
 progress = {}
 
